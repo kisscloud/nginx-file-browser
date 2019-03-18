@@ -39,3 +39,33 @@ shall be changed to
 ```
 
 And the mounting point is now `/home/myuser/files-to-serve/` instead of `/opt/www/files/`.
+
+## Nginx Conf
+
+```nginx
+server {
+
+    listen 8022;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        root /usr/share/nginx/html/nginx-file-browser;
+    }
+
+    location /files/ {
+        alias /packages/;
+        index ___i;
+	autoindex on;
+        autoindex_format json;
+        disable_symlinks off;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+```
